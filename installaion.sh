@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-echo "Flutter App Setup Script (Interactive Mode)"
+echo "🚀 Flutter App Setup Script (Interactive Mode)"
 
 # 1️⃣ App Name
 APP_NAME=""
@@ -9,7 +9,7 @@ while [ -z "$APP_NAME" ]; do
   echo -n "Enter App Name: "
   read APP_NAME </dev/tty
   if [ -z "$APP_NAME" ]; then
-    echo "App Name is required!"
+    echo "❌ App Name is required!"
   fi
 done
 
@@ -19,7 +19,7 @@ while [ -z "$PACKAGE_NAME" ]; do
   echo -n "Enter Package Name: "
   read PACKAGE_NAME </dev/tty
   if [ -z "$PACKAGE_NAME" ]; then
-    echo "Package Name is required!"
+    echo "❌ Package Name is required!"
   fi
 done
 
@@ -29,7 +29,7 @@ while [ -z "$MAIN_DOMAIN" ]; do
   echo -n "Enter Main Domain: "
   read MAIN_DOMAIN </dev/tty
   if [ -z "$MAIN_DOMAIN" ]; then
-    echo "Main Domain is required!"
+    echo "❌ Main Domain is required!"
   fi
 done
 
