@@ -13,7 +13,7 @@ while [ -z "$APP_NAME" ]; do
   fi
 done
 
-# 2️⃣ Package Name (only android build.gradle change)
+# 2️⃣ Package Name
 PACKAGE_NAME=""
 while [ -z "$PACKAGE_NAME" ]; do
   echo -n "Enter Package Name: "
@@ -54,18 +54,25 @@ flutter pub get
 echo "Renaming app..."
 flutter pub run rename_app:main all="$APP_NAME"
 
-# Change package name (only build.gradle)
-echo "Changing package name in Android build.gradle..."
-# Assuming change_app_package_name script supports only android: if not, we use sed
-# Example safe sed for android/app/build.gradle
+# Change Android package name safely
+echo "Updating Android package name..."
 BUILD_GRADLE="android/app/build.gradle"
 if [ -f "$BUILD_GRADLE" ]; then
   sed -i.bak "s|applicationId \".*\"|applicationId \"$PACKAGE_NAME\"|" "$BUILD_GRADLE"
+  sed -i.bak "s|namespace \".*\"|namespace \"$PACKAGE_NAME\"|" "$BUILD_GRADLE"
 else
   echo "⚠️ $BUILD_GRADLE not found!"
 fi
 
-# Update launcher icons (pubspec.yaml path)
+# Update AndroidManifest.xml (main.xml)
+MANIFEST="android/app/src/main/AndroidManifest.xml"
+if [ -f "$MANIFEST" ]; then
+  sed -i.bak "s|package=\".*\"|package=\"$PACKAGE_NAME\"|" "$MANIFEST"
+else
+  echo "⚠️ $MANIFEST not found!"
+fi
+
+# Update launcher icons (pubspec.yaml path, no input needed)
 echo "Updating launcher icons..."
 flutter pub run flutter_launcher_icons:main
 
