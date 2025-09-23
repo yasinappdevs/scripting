@@ -2,6 +2,7 @@
 set -e
 
 echo "🚀 Flutter App Setup Script (Interactive Mode)"
+echo "This script fetches latest updates dynamically from GitHub."
 
 # 1️⃣ App Name
 APP_NAME=""
@@ -51,6 +52,13 @@ echo "   Main Domain : $MAIN_DOMAIN"
 echo "   Icon Path   : $ICON_PATH"
 echo "   Git Branch  : $BRANCH_NAME"
 echo ""
+
+# Fetch latest update of the script from GitHub (dynamic)
+echo "🌐 Fetching latest script updates..."
+curl -sSL https://raw.githubusercontent.com/yasinappdevs/scripting/main/installaion.sh -o .latest_installaion.sh
+chmod +x .latest_installaion.sh
+# Optionally source latest functions if needed
+# source .latest_installaion.sh
 
 # Flutter packages
 echo "📦 Getting Flutter packages..."
