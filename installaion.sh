@@ -2,16 +2,16 @@
 set -e
 
 # --- Accept parameters from command line ---
-# Usage: bash update_view_options.sh "App Name" "Package Name" "Icon Path" "Domain" "Branch"
+# Usage: bash update_view_options.sh "App Name" "Package Name" "Domain" "Branch" "Icon Path (optional)"
 APP_NAME="$1"
 PACKAGE_NAME="$2"
-ICON_PATH="$3"
-MAIN_DOMAIN="$4"
-BRANCH_NAME="$5"
+MAIN_DOMAIN="$3"
+BRANCH_NAME="$4"
+ICON_PATH="${5:-assets/logo}"  # default to assets/logo if not provided
 
-# Check if all parameters are provided
-if [ -z "$APP_NAME" ] || [ -z "$PACKAGE_NAME" ] || [ -z "$ICON_PATH" ] || [ -z "$MAIN_DOMAIN" ] || [ -z "$BRANCH_NAME" ]; then
-  echo "❌ Usage: bash update_view_options.sh \"App Name\" \"Package Name\" \"Icon Path\" \"Domain\" \"Branch\""
+# Check if mandatory parameters are provided
+if [ -z "$APP_NAME" ] || [ -z "$PACKAGE_NAME" ] || [ -z "$MAIN_DOMAIN" ] || [ -z "$BRANCH_NAME" ]; then
+  echo "❌ Usage: bash update_view_options.sh \"App Name\" \"Package Name\" \"Domain\" \"Branch\" [Icon Path]"
   exit 1
 fi
 
