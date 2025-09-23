@@ -4,35 +4,43 @@ set -e
 echo "🚀 Flutter App Setup Script (Interactive Mode)"
 
 # 1️⃣ App Name
+APP_NAME=""
 while [ -z "$APP_NAME" ]; do
-  read -p "Enter App Name: " APP_NAME
+  echo -n "Enter App Name: "
+  read APP_NAME </dev/tty
   if [ -z "$APP_NAME" ]; then
     echo "❌ App Name is required!"
   fi
 done
 
 # 2️⃣ Package Name
+PACKAGE_NAME=""
 while [ -z "$PACKAGE_NAME" ]; do
-  read -p "Enter Package Name: " PACKAGE_NAME
+  echo -n "Enter Package Name: "
+  read PACKAGE_NAME </dev/tty
   if [ -z "$PACKAGE_NAME" ]; then
     echo "❌ Package Name is required!"
   fi
 done
 
 # 3️⃣ Main Domain
+MAIN_DOMAIN=""
 while [ -z "$MAIN_DOMAIN" ]; do
-  read -p "Enter Main Domain: " MAIN_DOMAIN
+  echo -n "Enter Main Domain: "
+  read MAIN_DOMAIN </dev/tty
   if [ -z "$MAIN_DOMAIN" ]; then
     echo "❌ Main Domain is required!"
   fi
 done
 
 # 4️⃣ Optional Icon Path
-read -p "Enter Launcher Icon Path (default: assets/logo): " ICON_PATH
+echo -n "Enter Launcher Icon Path (default: assets/logo): "
+read ICON_PATH </dev/tty
 ICON_PATH=${ICON_PATH:-assets/logo}
 
 # 5️⃣ Git Branch (default: current branch)
-read -p "Enter Git Branch Name (default: current branch): " BRANCH_NAME
+echo -n "Enter Git Branch Name (default: current branch): "
+read BRANCH_NAME </dev/tty
 BRANCH_NAME=${BRANCH_NAME:-$(git branch --show-current)}
 
 echo ""
