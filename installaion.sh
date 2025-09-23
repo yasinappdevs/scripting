@@ -1,39 +1,63 @@
 #!/bin/bash
 set -e
 
-# --- Accept parameters from command line ---
-# Usage: bash update_view_options.sh "App Name" "Package Name" "Domain" "Branch" "Icon Path (optional)"
-APP_NAME="$1"
-PACKAGE_NAME="$2"
-MAIN_DOMAIN="$3"
-BRANCH_NAME="$4"
-ICON_PATH="${5:-assets/logo}"  # default to assets/logo if not provided
+echo "🚀 Flutter App Setup Script (Interactive Mode)"
 
-# Check if mandatory parameters are provided
-if [ -z "$APP_NAME" ] || [ -z "$PACKAGE_NAME" ] || [ -z "$MAIN_DOMAIN" ] || [ -z "$BRANCH_NAME" ]; then
-  echo "❌ Usage: bash update_view_options.sh \"App Name\" \"Package Name\" \"Domain\" \"Branch\" [Icon Path]"
+# Step 1: Ask for App Name
+read -p "Enter App Name: " APP_NAME
+if [ -z "$APP_NAME" ]; then
+  echo "❌ App Name is required!"
   exit 1
 fi
 
-echo "🚀 Starting setup for $APP_NAME"
+# Step 2: Ask for Package Name
+read -p "Enter Package Name: " PACKAGE_NAME
+if [ -z "$PACKAGE_NAME" ]; then
+  echo "❌ Package Name is required!"
+  exit 1
+fi
 
-# Flutter packages
+# Step 3: Ask for Main Domain
+read -p "Enter Main Domain: " MAIN_DOMAIN
+if [ -z "$MAIN_DOMAIN" ]; then
+  echo "❌ Main Domain is required!"
+  exit 1
+fi
+
+# Step 4: Optional Icon Path
+read -p "Enter Launcher Icon Path (default: assets/logo): " ICON_PATH
+ICON_PATH=${ICON_PATH:-assets/logo}
+
+# Step 5: Git Branch
+read -p "Enter Git Branch Name (default: current branch): " BRANCH_NAME
+BRANCH_NAME=${BRANCH_NAME:-$(git branch --show-current)}
+
+echo ""
+echo "✅ Inputs received:"
+echo "   App Name    : $APP_NAME"
+echo "   Package Name: $PACKAGE_NAME"
+echo "   Main Domain : $MAIN_DOMAIN"
+echo "   Icon Path   : $ICON_PATH"
+echo "   Git Branch  : $BRANCH_NAME"
+echo ""
+
+# Step 6: Flutter packages
 echo "📦 Getting Flutter packages..."
 flutter pub get
 
-# Rename app
+# Step 7: Rename app
 echo "✏️ Renaming app..."
 flutter pub run rename_app:main all="$APP_NAME"
 
-# Change package name
+# Step 8: Change package name
 echo "📦 Changing package name..."
 flutter pub run change_app_package_name:main "$PACKAGE_NAME"
 
-# Update launcher icons
+# Step 9: Update launcher icons
 echo "🎨 Updating launcher icons..."
 flutter pub run flutter_launcher_icons --image-path "$ICON_PATH"
 
-# Update domain in api_endpoint.dart
+# Step 10: Update domain in api_endpoint.dart
 API_FILE="lib/backend/services/api_endpoint.dart"
 if [ -f "$API_FILE" ]; then
   echo "🌐 Updating mainDomain in $API_FILE..."
@@ -42,13 +66,13 @@ else
   echo "⚠️ $API_FILE not found!"
 fi
 
-# Build APKs (split per ABI)
+# Step 11: Build APKs (split per ABI)
 echo "⚒️ Building split APKs..."
 flutter build apk --release \
   --target-platform android-arm,android-arm64,android-x64 \
   --split-per-abi
 
-# Git commit + push
+# Step 12: Commit & push
 echo "📤 Committing & pushing changes..."
 git add .
 git commit -m "chore: setup $APP_NAME ($PACKAGE_NAME) with mainDomain $MAIN_DOMAIN"
