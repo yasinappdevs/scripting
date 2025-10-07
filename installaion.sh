@@ -85,6 +85,17 @@ else
 fi
 
 # -------------------------------
+# Update package_name in google-services.json
+# -------------------------------
+GOOGLE_SERVICES_JSON="android/app/google-services.json"
+if [ -f "$GOOGLE_SERVICES_JSON" ]; then
+  echo "Updating package_name in google-services.json..."
+  sed -i.bak "s|\"package_name\": \".*\"|\"package_name\": \"$PACKAGE_NAME\"|" "$GOOGLE_SERVICES_JSON"
+else
+  echo "⚠️ $GOOGLE_SERVICES_JSON not found!"
+fi
+
+# -------------------------------
 # Update launcher icons
 # -------------------------------
 echo "Updating launcher icons..."
